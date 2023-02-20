@@ -107,3 +107,28 @@ module.exports.deleteUserDBService = (id) => {
      });
    });
  };
+
+ module.exports.updateUserDBService = (id, userDetails) => {
+   return new Promise(function myFn(resolve, reject) {
+     userModel.findById(id, function findUser(errorvalue, user) {
+       if (errorvalue) {
+         reject({ status: false, msg: "Fallo al buscar el usuario" });
+       } else if (user) {
+         user.firstname = userDetails.firstname;
+         user.lastname = userDetails.lastname;
+         user.email = userDetails.email;
+         user.password = encryptor.encrypt(userDetails.password); // encriptar la nueva contraseña
+ 
+         user.save(function resultHandle(errorvalue) {
+           if (errorvalue) {
+             reject({ status: false, msg: "Fallo al actualizar el usuario" });
+           } else {
+             resolve({ status: true, msg: "Usuario actualizado con éxito" });
+           }
+         });
+       } else {
+         reject({ status: false, msg: "No se encontró ningún usuario con ese ID" });
+       }
+     });
+   });
+ }

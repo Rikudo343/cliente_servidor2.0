@@ -13,6 +13,8 @@ router.route('/user').get(userController.allUserControllerFunc);
 router.route('/user/search/:id').get(userController.oneUSerControllerFunc);
 // borrar un usuario
 router.route('/user/delete/:id').delete(userController.deleteUserControllerFunc);
+// actualizar usurio 
+router.route('/user/update/:id').put(userController.updateUserControllerFunc);
 
 
 module.exports = router;

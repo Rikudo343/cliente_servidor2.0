@@ -76,4 +76,21 @@ var deleteUserControllerFunc = async(req, res) => {
     }
   }
 
-module.exports = { createUserControllerFunc, loginUserControllerFunc, allUserControllerFunc, oneUSerControllerFunc, deleteUserControllerFunc};
+  var updateUserControllerFunc = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const updateDetails = req.body;
+        const result = await userService.updateUserDBService(userId, updateDetails);
+        if (result) {
+            res.send({ "status": true, "message": "El usuario fue actualizado correctamente" });
+            console.log(result);
+        } else {
+            res.send({ "status": false, "message": "Hubo un error al actualizar el usuario" });
+        }
+    } catch (error) {
+        console.log(error);
+        res.send({ "status": false, "message": "Hubo un error al actualizar el usuario" });
+    }
+}
+
+module.exports = { createUserControllerFunc, loginUserControllerFunc, allUserControllerFunc, oneUSerControllerFunc, deleteUserControllerFunc, updateUserControllerFunc};
