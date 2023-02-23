@@ -98,15 +98,22 @@ module.exports.oneUserDBService = (id) => {
 
 module.exports.deleteUserDBService = (id) => {
    return new Promise(function myFn(resolve, reject) {
-     userModel.deleteOne({ _id: id }, function deleteUser(errorvalue) {
-       if (errorvalue) {
-         reject({ status: false, msg: "Fallo al eliminar el usuario" });
-       } else {
-         resolve({ status: true, msg: "Usuario eliminado exitosamente" });
-       }
-     });
-   });
- };
+      userModel.findOneAndDelete({ _id: id }, function getresult(errorvalue, user){
+         if (errorvalue){
+            reject({status: false, msg: "El usuario que desea eleiminiar no existe"})
+         }else {
+               if (user != undefined && user != null) {
+                 resolve({ status: true, msg: "Se a eliminado el usuario" });
+               } else{
+                 resolve({ status: false, msg: "Usuario no fue encontrado" });
+               }
+            };
+         });
+         
+      });
+     
+   };
+ 
 
  module.exports.updateUserDBService = (id, userDetails) => {
    return new Promise(function myFn(resolve, reject) {
